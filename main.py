@@ -44,7 +44,7 @@ def echo(update: Update, _: CallbackContext) -> None:
 def main() -> None:
     """Start the bot."""
     # Create the Updater and pass it your bot's token.
-    updater = Updater(os.getenv("token"))
+    updater = Updater(os.getenv("TOKEN"))
 
     # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher
@@ -57,8 +57,8 @@ def main() -> None:
     dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
 
     # Start the Bot
-    updater.start_webhook(listen="0.0.0.0", port=int(port), url_path=os.getenv("token"))
-    updater.bot.setWebhook('https://harustar-commissions-bot.herokuapp.com/' + os.getenv("token"))
+    updater.start_webhook(listen="0.0.0.0", port=int(port), url_path=os.getenv("TOKEN"))
+    updater.bot.setWebhook('https://harustar-commissions-bot.herokuapp.com/' + os.getenv("TOKEN"))
 
     # Run the bot until you press Ctrl-C or the process receives SIGINT,
     # SIGTERM or SIGABRT. This should be used most of the time, since
