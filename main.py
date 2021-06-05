@@ -1,21 +1,6 @@
-#!/usr/bin/env python
-# pylint: disable=C0116
-# This program is dedicated to the public domain under the CC0 license.
-
-"""
-Simple Bot to reply to Telegram messages.
-First, a few handler functions are defined. Then, those functions are passed to
-the Dispatcher and registered at their respective places.
-Then, the bot is started and runs until we press Ctrl-C on the command line.
-Usage:
-Basic Echobot example, repeats messages.
-Press Ctrl-C on the command line or send a signal to the process to stop the
-bot.
-"""
-
 import os
 try:
-    from dotenv import load_dotenv
+    from dotenv import load_dotenv  # Used for local debugging purposes
     load_dotenv()
 except ModuleNotFoundError:
     pass
@@ -24,6 +9,8 @@ import logging
 
 from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+
+port = int(os.environ.get('PORT', 5000))
 
 # Enable logging
 logging.basicConfig(
@@ -70,7 +57,8 @@ def main() -> None:
     dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
 
     # Start the Bot
-    updater.start_polling()
+    updater.start_webhook(listen="0.0.0.0", port=int(port), url_path=os.getenv("token"))
+    updater.bot.setWebhook('https://harustar-commissions-bot.herokuapp.com/' + os.getenv("token"))
 
     # Run the bot until you press Ctrl-C or the process receives SIGINT,
     # SIGTERM or SIGABRT. This should be used most of the time, since
