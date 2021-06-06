@@ -38,15 +38,13 @@ def echo(update: Update, _: CallbackContext) -> None:
 
 def main() -> None:
     """Start the bot."""
-    # Create the Updater and pass it your bot's token.
-    updater = Updater(bot_token)
-
-    # Get the dispatcher to register handlers
-    dispatcher = updater.dispatcher
+    updater = Updater(bot_token)  # Create the Updater and pass it your bot's token.
+    dispatcher = updater.dispatcher  # Get the dispatcher to register handlers
 
     # on different commands - answer in Telegram
     dispatcher.add_handler(CommandHandler('start', start))
     dispatcher.add_handler(CommandHandler('help', help_command))
+    dispatcher.add_handler(CommandHandler('echo', echo))
 
     # on non command i.e message - echo the message on Telegram
     dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
