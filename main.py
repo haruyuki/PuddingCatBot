@@ -10,7 +10,7 @@ import logging
 from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
-port = int(os.environ.get('PORT', 5000))
+port = int(os.environ.get('PORT'))
 
 # Enable logging
 logging.basicConfig(
@@ -44,21 +44,21 @@ def echo(update: Update, _: CallbackContext) -> None:
 def main() -> None:
     """Start the bot."""
     # Create the Updater and pass it your bot's token.
-    updater = Updater(os.getenv("TOKEN"))
+    updater = Updater(os.getenv('TOKEN'))
 
     # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher
 
     # on different commands - answer in Telegram
-    dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(CommandHandler("help", help_command))
+    dispatcher.add_handler(CommandHandler('start', start))
+    dispatcher.add_handler(CommandHandler('help', help_command))
 
     # on non command i.e message - echo the message on Telegram
     dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
 
     # Start the Bot
-    updater.start_webhook(listen="0.0.0.0", port=int(port), url_path=os.getenv("TOKEN"))
-    updater.bot.setWebhook('https://harustar-commissions-bot.herokuapp.com/' + os.getenv("TOKEN"))
+    updater.start_webhook(listen='0.0.0.0', port=port, url_path=os.getenv('TOKEN'))
+    updater.bot.setWebhook('https://harustar-commissions-bot.herokuapp.com/' + os.getenv('TOKEN'))
 
     # Run the bot until you press Ctrl-C or the process receives SIGINT,
     # SIGTERM or SIGABRT. This should be used most of the time, since
