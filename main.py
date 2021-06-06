@@ -10,15 +10,13 @@ import logging
 from telegram import Update, ForceReply
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
-port = int(os.environ.get('PORT'))
-
 # Enable logging
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
 )
 
 logger = logging.getLogger(__name__)
-
+bot_token = os.getenv('TOKEN')
 
 # Define a few command handlers. These usually take the two arguments update and
 # context.
@@ -44,7 +42,7 @@ def echo(update: Update, _: CallbackContext) -> None:
 def main() -> None:
     """Start the bot."""
     # Create the Updater and pass it your bot's token.
-    updater = Updater(os.getenv('TOKEN'))
+    updater = Updater(bot_token)
 
     # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher
@@ -57,8 +55,7 @@ def main() -> None:
     dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
 
     # Start the Bot
-    updater.start_webhook(listen='0.0.0.0', port=port, url_path=os.getenv('TOKEN'))
-    updater.bot.setWebhook('https://harustar-commissions-bot.herokuapp.com/' + os.getenv('TOKEN'))
+    updater.start_webhook(listen="0.0.0.0", port=os.getenv("PORT"), url_path=bot_token, webhook_url='https://harustar-commissions-bot.herokuapp.com/' + bot_token, force_event_loop=True)
 
     # Run the bot until you press Ctrl-C or the process receives SIGINT,
     # SIGTERM or SIGABRT. This should be used most of the time, since
